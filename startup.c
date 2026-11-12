@@ -5,7 +5,7 @@
 \brief      Reset handler, vector table and default exception handlers.
 
 \author     Z. BEN-AKKA
-\version    1.0
+\version    1.1
 \date       12/11/2026
 
 \details
@@ -19,6 +19,7 @@
 | Version | Date       | Author      | Description                                  |
 |:-------:|:----------:|:------------|:---------------------------------------------|
 | 1.0     | 12/11/2026 | Z. BEN-AKKA | Initial version, enables the FPU at reset.   |
+| 1.1     | 12/11/2026 | Z. BEN-AKKA | Console on USART2: IRQ 38 replaces USART1.   |
 ****************************
 */
 
@@ -88,7 +89,7 @@ void SVC_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void DebugMon_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));
 void SysTick_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void USART1_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
+void USART2_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 
 // Not formatted: clang-format would pack several vectors on one line
 // clang-format off
@@ -111,7 +112,7 @@ __attribute__((section(".isr_vector"), used)) void (*const vector_table[])(void)
     PendSV_Handler,
     SysTick_Handler,
 
-    // External interrupt vectors: IRQ 0 through IRQ 37 (STM32F407, RM0090 table 61).
+    // External interrupt vectors: IRQ 0 through IRQ 38 (STM32F407, RM0090 table 61).
     Default_Handler, // 0: WWDG
     Default_Handler, // 1: PVD
     Default_Handler, // 2: TAMP_STAMP
@@ -149,6 +150,7 @@ __attribute__((section(".isr_vector"), used)) void (*const vector_table[])(void)
     Default_Handler, // 34: I2C2_ER
     Default_Handler, // 35: SPI1
     Default_Handler, // 36: SPI2
-    USART1_IRQHandler, // 37: USART1
+    Default_Handler, // 37: USART1
+    USART2_IRQHandler, // 38: USART2
 };
 // clang-format on
