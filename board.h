@@ -2,15 +2,16 @@
 /*!
 ****************************
 \file       stm32f407-disc1/board.h
-\brief      STM32F407G-DISC1 wiring: clock, LED, user button, console UART pins.
+\brief      STM32F407G-DISC1 wiring: clock, LED, user button, console UART pins, descriptors.
 
 \author     Z. BEN-AKKA
-\version    1.0
+\version    1.1
 \date       12/11/2026
 
 \details
   Every board provides board.h; the applications include it. It describes
-  the hardware around the MCU (UM1472, MB997 schematic).
+  the hardware around the MCU (UM1472, MB997 schematic) and gives the
+  generic drivers of dev/common the descriptors they take as parameters.
   The console UART is USART2 on PA2/PA3: the ST-LINK/V2-A virtual COM port
   is not wired to the MCU by default, so a 3.3 V USB-serial adapter is
   connected to these pins.
@@ -19,6 +20,7 @@
 | Version | Date       | Author      | Description                                  |
 |:-------:|:----------:|:------------|:---------------------------------------------|
 | 1.0     | 12/11/2026 | Z. BEN-AKKA | Initial version: clock, LD4, B1, USART2.     |
+| 1.1     | 12/11/2026 | Z. BEN-AKKA | Declare the LD4 descriptor.                  |
 ****************************
 */
 
@@ -29,6 +31,8 @@
 
 #include "mcu.h"
 
+#include "led/led.h"
+
 /* Board - STM32F407G-DISC1 (UM1472, MB997 schematic) */
 #define HSE_HZ 8000000UL ///< External crystal X2.
 
@@ -36,5 +40,7 @@
 #define USER_BUTTON_PIN 0  ///< PA0, B1 blue, high when pressed.
 #define CONSOLE_TX_PIN  2  ///< PA2, USART2_TX (AF7), to the USB-serial adapter RX.
 #define CONSOLE_RX_PIN  3  ///< PA3, USART2_RX (AF7), from the USB-serial adapter TX.
+
+extern const Led BOARD_LED_LD4; ///< LD4 green, PD12, active high.
 
 #endif
